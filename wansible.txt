@@ -1,0 +1,36 @@
+"on Windows"
+
+=>windows powershell
+1.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+2.
+$url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+$file = "$env:temp\ConfigureRemotingForAnsible.ps1"
+
+(New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+
+powershell.exe -ExecutionPolicy ByPass -File $file
+
+3.
+winrm enumerate winrm/config/Listener
+----------------------------------------------------------------------
+linux 
+
+pip3 install "pywinrm>=0.3.0"
+pip3 install pywinrm
+--------------------------------------------------------------------------
+etc/ansible/hosts
+
+
+[win]
+192.168.198.20
+
+[win:vars]
+ansible_user=user
+ansible_password=123456
+ansible_port=5986
+ansible_connection=winrm
+ansible_winrm_scheme=https
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_kerberos_delegation=true
