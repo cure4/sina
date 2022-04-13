@@ -1,0 +1,8 @@
+---
+- name: Stop Service
+  hosts: win
+  tasks:
+   - name: Stop a service
+     ansible.windows.win_service:
+       name: wuauserv
+       state: stopped
